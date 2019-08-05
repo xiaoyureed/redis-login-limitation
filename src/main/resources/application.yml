@@ -1,0 +1,58 @@
+
+spring:
+  datasource:
+    # http://localhost:8080/console 登陆时输入
+    # jdbc:h2:file:c:/h2/example-app 使用基于文件的存储而不是内存
+    url: jdbc:h2:mem:example-app;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    platform: h2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+    #    schema: classpath:db/schema.sql # jpa的 ddl-auto 打开了就不要使用这个了
+    data: classpath:db/data.sql
+    schema: classpath:db/schema.sql
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+        # create: 每次启动时删除table然后新建, 退出时不会删除;
+        # create-drop: 启动时先删除然后新建, 退出时删除, 测试环境, 对于h2, 这是默认
+        # update: 每次启动，没有表格会新建表格，有则不新建，表内有数据不会清空，只会更新;
+        # validate: 运行程序会校验数据与数据库的字段类型是否相同，不同会报错
+      # none: Hibernate不会自动创建数据库表结构。在生产环境中最好用这个设置
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+
+  ###
+  #   H2 Settings
+  ###
+  h2:
+    console:
+      enabled: true
+      path: /console # default: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false # 不允许远程访问
+  redis:
+    # Redis database index, default to 0
+    database: 0
+    host: 10.59.97.214
+    port: 6379
+    password:
+    # redis java client, being used by springboot 2
+    lettuce:
+      pool:
+        # pool size
+        max-active: 8
+        # wait time when block, default to -1 representing doesn't wait
+        max-wait: -1
+        #  idle time
+        max-idle: 8
+        min-idle: 0
+    # ms
+    timeout: 1000
+server:
+  port: 8888
